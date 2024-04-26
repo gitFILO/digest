@@ -1,9 +1,12 @@
 import { getActiveTabURL } from "./utils.js";
 
+const DEVELOP_URL = "http://localhost:3000"
+const DEPLOY_URL = "https://digest-jungle.site"
+
 async function checkLoginStatus() {
   // 로그인 체크 안하도록 변경
   // console.log("최신입니다");
-  const result = await fetch("https://digest-jungle.site/api/me", {
+  const result = await fetch(`${DEVELOP_URL}/api/me`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -52,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       '<div class="title"><a href="#" id="loginLink">로그인 하러 가기</a></div>';
 
     document.getElementById("loginLink").addEventListener("click", function () {
-      window.open("https://digest-jungle.site/playground-hjin", "_blank");
+      window.open(`${DEVELOP_URL}/`, "_blank");
     });
 
     return;

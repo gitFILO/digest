@@ -1,3 +1,6 @@
+const DEVELOP_URL = "http://localhost:3000"
+const DEPLOY_URL = "https://digest-jungle.site"
+
 const newVideoLoaded = async (checked) => {
   let youtubeLeftControls =
     document.getElementsByClassName("ytp-left-controls")[0];
@@ -36,7 +39,7 @@ const addVideoEventHandler = async () => {
   //window.open('http://localhost:3000/playground-ai?v='+get_v_id, 'CodeGPT');
 
   // TODO: videoUrl 부터 보내 보고 잘 되면 유저에 대한 정보나 쿠키를 보내서 유효성을 확인하는 식으로 확장 하기
-  sendYoutubeUrl("https://digest-jungle.site/api/extension", {
+  sendYoutubeUrl(`${DEVELOP_URL}/api/extension`, {
     videoUrl: get_v_id,
   });
 };
@@ -144,15 +147,15 @@ const showExtensionIcon = (element) => {
 
   extensionIcon.clickEventListener = () => {
     const videoUrl = element.querySelector("a#thumbnail").href;
-    // 콘솔이 아니라 fetch로 백으로 보내야함
+
     const get_v = videoUrl.split("?v=");
 
     const get_v_id = get_v[1];
-    // console.log(get_v_id); // 이놈 수정
+    // console.log(get_v_id);
     //window.open('http://localhost:3000/playground-ai?v='+get_v_id, 'CodeGPT');
     //
     // TODO: videoUrl 부터 보내 보고 잘 되면 유저에 대한 정보나 쿠키를 보내서 유효성을 확인하는 식으로 확장 하기
-    sendYoutubeUrl("https://digest-jungle.site/api/extension", {
+    sendYoutubeUrl(`${DEVELOP_URL}/api/extension`, {
       videoUrl: get_v_id,
     });
 
@@ -196,11 +199,11 @@ const showTargetExtensionIcon = (element) => {
     const get_v = videoUrl.split("?v=");
 
     const get_v_id = get_v[1];
-    console.log(get_v_id); // 이놈 수정
+    console.log(get_v_id); 
     //window.open('http://localhost:3000/playground-ai?v='+get_v_id, 'CodeGPT');
     //
     // TODO: videoUrl 부터 보내 보고 잘 되면 유저에 대한 정보나 쿠키를 보내서 유효성을 확인하는 식으로 확장 하기
-    sendYoutubeUrl("https://digest-jungle.site/api/extension", {
+    sendYoutubeUrl(`${DEVELOP_URL}/api/extension`, {
       videoUrl: get_v_id,
     });
 
@@ -252,16 +255,12 @@ function sendYoutubeUrl(url, data) {
 
 async function extractContents() {
   const currentUrl = window.location.href;
-  // console.log("clicked!");
   let sendData = contentSelect();
   let data = {
     url: currentUrl,
     contents: sendData,
   };
-
-  // console.log("current Url : ", currentUrl);
-  // console.log(data);
-  postData("https://digest-jungle.site/api/extension", data);
+  postData(`${DEVELOP_URL}/api/extension`, data);
 
   return;
 }
@@ -274,17 +273,14 @@ async function postData(url = "", data = {}) {
     credentials: "include",
   };
 
-  // console.log(requestOptions);
   const response = await fetch(url, requestOptions);
 
-  // console.log(response);
-  return response; // 'opaque' 응답은 내용을 읽을 수 없습니다.
+  return response; 
 }
 
 function getAllText(element) {
-  // 특정 태그 또는 클래스를 가진 요소는 건너뛸 것입니다.
   const skipTags = ["SCRIPT", "STYLE", "CODE"];
-  const skipClasses = ["office_preference"]; // 건너뛸 클래스를 여기에 추가
+  const skipClasses = ["office_preference"]; 
 
   let text = "";
   for (const child of element.childNodes) {
@@ -293,32 +289,24 @@ function getAllText(element) {
       (skipTags.includes(child.tagName) ||
         skipClasses.some((cls) => child.classList.contains(cls)))
     ) {
-      continue; // 정의된 태그 또는 클래스에 해당되면 건너뜁니다.
+      continue; 
     }
 
     if (child.nodeType === Node.TEXT_NODE) {
       const trimmedText = child.textContent.trim();
       if (trimmedText.length >= 10) {
-        // 10글자 이상인 텍스트만 추가
         text += trimmedText + "\n";
       }
     } else if (child.nodeType === Node.ELEMENT_NODE) {
-      text += getAllText(child); // 재귀적으로 처리
+      text += getAllText(child);
     }
   }
   return text;
 }
 
 function contentSelect() {
-  // const elements = window.document.querySelectorAll("h1, h2");
+  const allText = getAllText(document.body); 
 
-  // let combinedText = [];
-  // for (let element of elements) {
-  //   combinedText.push(element.innerText);
-  // }
-  const allText = getAllText(document.body); // body 요소부터 시작하여 모든 텍스트 추출
-
-  // console.log("보낼 컨텐츠: ", allText);
   return allText;
 }
 

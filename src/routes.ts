@@ -6,10 +6,10 @@
 export const publicRoutes = [
   "/",
   "/auth/new-verification",
-  "/playground-ai",
-  "/playground-trpc",
-  "/playground-hyunji",
-  "/playground-hjin",
+  // "/playground-ai",
+  // "/playground-trpc",
+  // "/playground-hyunji",
+  // "/playground-hjin",
 ];
 
 /**

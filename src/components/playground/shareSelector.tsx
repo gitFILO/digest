@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { TeamSpace } from "@/app/playground-hjin/[...params]/page";
+import { TeamSpace } from "@/app/[...params]/page";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

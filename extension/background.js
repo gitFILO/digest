@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         var title = activeTab.title;
         sendResponse({ url: url, title: title });
       });
-      return true; // 비동기 응답을 위해 필요
+      return true; 
       break;
     case "sendWebUrl":
       break;
@@ -47,6 +47,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       var title = activeTab.title;
       sendResponse({ url: url, title: title });
     });
-    return true; // 비동기 응답을 위해 필요합니다.
+    return true; 
   }
 });

@@ -50,7 +50,7 @@ export default function DelebeButton({
     });
 
     setTimeout(() => {
-      window.location.href = `/playground-hjin/${spaceId}`;
+      window.location.href = `/${spaceId}`;
     }, 800);
 
     return data;

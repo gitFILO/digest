@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/app/playground-hjin/ui/button";
+import { Button } from "@/app/ui/button";
 import { Home } from "lucide-react";
 import { signIn } from "next-auth/react";
 
 export default function AccessDenied() {
   const returnToMain = () => {
-    window.location.href = `/playground-hjin/`;
+    window.location.href = `/`;
 
     return;
   };

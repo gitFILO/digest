@@ -194,7 +194,7 @@ ORDER BY rank DESC;`)
         >
           <VideoView2
             chats={chats}
-            workspaceId={"/playground-hjin/"}
+            workspaceId={""}
             spaceId={spaceId}
           ></VideoView2>
         </div>

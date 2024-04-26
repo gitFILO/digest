@@ -25,7 +25,9 @@ export const getCurrentUserPersonalSpace = async () => {
     .select()
     .from(users)
     .where(eq(users.id, String(user.id)));
-
+  if (userInfo == null){
+    return null;
+  }
   return userInfo.defaultWorkspace;
 };
 

@@ -1,25 +1,31 @@
-import "./globals.css";
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
-import { headers } from "next/headers";
-import { auth } from "@/auth";
-import { TRPCReactProvider } from "@/trpc/react";
+import { Noto_Sans_KR } from "next/font/google";
+import Footer from "@/components/playground/footer";
+import Header from "@/components/playground/header";
+import { Toaster } from "@/components/ui/sonner";
+import "./local2.css";
+import { cn } from "@/lib/utils";
+
+const notoSansKr = Noto_Sans_KR({ subsets: ["latin-ext"] });
 
 export const metadata: Metadata = {
-  title: "NextAuth.js Example",
-  description:
-    "This is an example site to demonstrate how to use NextAuth.js for authentication",
+  title: "digest",
+  description: "youtube digestifier",
 };
 
-export default async function RootLayout({
-  children,
-}: React.PropsWithChildren) {
-  const session = await auth();
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <>
-      <SessionProvider session={session}>
-        <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
-      </SessionProvider>
-    </>
+    <html lang="en">
+      <body className={`${notoSansKr.className} antialiased`}>
+        <div className="flex flex-col justify-between w-full h-full min-h-screen">
+          <Header />
+          <main className="z-0 flex-auto w-full overflow-y-hidden">
+            {children}
+          </main>
+          <Toaster />
+          <Footer />
+        </div>
+      </body>
+    </html>
   );
 }

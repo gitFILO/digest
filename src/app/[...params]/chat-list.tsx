@@ -36,7 +36,7 @@ export default async function ChatList({
             <Link
               key=""
               className="inline-flex items-center whitespace-nowrap text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground  rounded-md px-3 justify-start leading-10"
-              href={`/playground-hjin/${spaceId}`}
+              href={`/${spaceId}`}
               style={{
                 backgroundColor: chatId === null ? "black" : "",
                 color: chatId === null ? "white" : "",
@@ -49,7 +49,7 @@ export default async function ChatList({
             {chats.map((chat) => (
               <Link
                 key={chat.id}
-                href={`/playground-hjin/${spaceId}/${chat.id}?search=${
+                href={`/${spaceId}/${chat.id}?search=${
                   search ?? ""
                 }`}
                 className={`chatlistitem truncate inline-flex items-center whitespace-nowrap text-lg font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-md px-3 justify-start leading-10`}

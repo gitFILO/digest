@@ -5,6 +5,8 @@ import { headers } from "next/headers";
 export async function GET(req: NextRequest, res: NextResponse) {
   const origin = req.headers.get("origin");
   const session = await auth();
+  console.log("api/me/ 요청!")
+  console.log(session)
   // console.log(session?.user);
   if (session?.user) {
     return new Response(JSON.stringify(session.user), {

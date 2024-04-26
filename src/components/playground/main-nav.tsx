@@ -34,7 +34,7 @@ import { desc } from "drizzle-orm";
 import { auth } from "@/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { TeamInviteButton } from "@/app/playground-hjin/[...params]/components/teamInviteButton";
+import { TeamInviteButton } from "@/app/[...params]/components/teamInviteButton";
 import {
   Menubar,
   MenubarContent,
@@ -429,7 +429,7 @@ export function MainNav({
       {/* <button className="ListBtn" onClick={toggleVisibility}>
         리스트
       </button> */}
-      <CustomLink href="/playground-hjin">
+      <CustomLink href="/">
         <span className={cn("font-semibold text-2xl", font.className)}>
           Digest
         </span>
@@ -477,7 +477,7 @@ export function MainNav({
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink
-              href={`/playground-hjin/${currentUserPersonalSpace}`}
+              href={`/${currentUserPersonalSpace}`}
               className={navigationMenuTriggerStyle()}
             >
               개인 스페이스
@@ -541,7 +541,7 @@ export function MainNav({
                         <MenubarMenu>
                           <ListItem
                             key={teamSpace.id} // 고유한 key prop으로 id 사용
-                            href={`/playground-hjin/${teamSpace.id}`} // 팀 스페이스의 Id를 사용하여 href 설정
+                            href={`/${teamSpace.id}`} // 팀 스페이스의 Id를 사용하여 href 설정
                             title={teamSpace.name!} // 팀 스페이스의 title 설정
                             className="w-[300px]"
                           >
