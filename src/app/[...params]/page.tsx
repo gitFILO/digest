@@ -150,7 +150,7 @@ ORDER BY rank DESC;`)
   return (
     <ClientComponent chatId={chatId} chatToggle={chatToggle}>
       {/* first children */}
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <ReactQueryProvider>
           <ChatList
             spaceId={spaceId}
@@ -180,13 +180,14 @@ ORDER BY rank DESC;`)
             currentSpace.type === "team" && "bg-stone-200 bg-opacity-60"
           )}
         >
-
-        <ReactQueryProvider>
-          <VideoView2
-            workspaceId={""}
-            spaceId={spaceId}
-          />
-        </ReactQueryProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ReactQueryProvider>
+            <VideoView2
+              workspaceId={""}
+              spaceId={spaceId}
+            />
+          </ReactQueryProvider>
+        </Suspense>
         </div>
       )}
       {/* third children */}
