@@ -1,3 +1,4 @@
+'use client'
 import { db } from "@/db";
 import { asc, desc, eq } from "drizzle-orm";
 import { SelectChat, chats as chatsTable } from "@/db/schema";
@@ -11,21 +12,40 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 import { searchAction } from "@/actions/search";
-import { SearchForm } from "@/components/search-form";
+import { useQuery } from "@tanstack/react-query";
+import { Key } from "react";
+// import { SearchForm } from "@/components/search-form";
 
 type SelectChatDto = Pick<SelectChat, "id" | "name" | "videoId">;
 
 export default async function ChatList({
   spaceId,
   chatId,
-  chats,
   search,
 }: {
   spaceId: string | null;
   chatId: string | null;
-  chats: SelectChatDto[];
   search?: string;
 }) {
+
+  const getChats = async () => {
+    
+    const res = await fetch(`/api/chats/${spaceId}`)
+
+    console.log("res:" , res)
+    if (!res.ok) throw new Error('Failed to fetch chats');
+    return res.json();
+  };
+  
+  const { data: chats, isLoading, error } = useQuery({
+    queryKey: ['posts'],
+    queryFn: getChats, 
+    refetchInterval: 2000 // 2초마다 폴링
+});
+  console.log(chats)
+  if(!chats){
+    return <></>
+  }
   return (
     <div className="h-full w-full overflow-x-hidden overflow-y-auto text-2xl">
       {" "}
@@ -45,8 +65,8 @@ export default async function ChatList({
               <FaImage size={22} color={chatId === null ? "white" : "black"} />{" "}
               <div className="mx-2">Show Thumbnail</div>
             </Link>
-            <SearchForm search={search} />
-            {chats.map((chat) => (
+            {/* <SearchForm search={search} /> */}
+            {chats.map((chat: { id: Key | null | undefined; name: string; }) => (
               <Link
                 key={chat.id}
                 href={`/${spaceId}/${chat.id}?search=${

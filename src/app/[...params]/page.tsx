@@ -74,6 +74,7 @@ import DelebeButton from "@/components/playground/delebeButton";
 import { redirect } from "next/navigation";
 import AccessDenied from "@/components/playground/access-denined";
 import { cn } from "@/lib/utils";
+import { ReactQueryProvider } from "@/hooks/useReactQuery";
 
 export interface TeamSpace {
   id: string | null;
@@ -106,24 +107,9 @@ ORDER BY rank DESC;`)
     );
   };
 
-  const getChats = async (spaceId: string) =>
-    await db
-      .select({
-        id: chatsTable.id,
-        name: chatsTable.name,
-        videoId: chatsTable.videoId,
-      })
-      .from(chatsTable)
-      .where(eq(chatsTable.workspaceId, spaceId))
-      .orderBy(desc(chatsTable.createdAt));
-
   const spaceId = params.params[0];
   const chatId = params.params[1] ?? null;
   // console.log("address", search, spaceId, chatId);
-  const chats = effectiveSearch
-    ? await searchedChats()
-    : await getChats(spaceId);
-
   // console.log("chats", chats);
   // console.log("spaceid:", spaceId);
   // console.log("chatId:", chatId);
@@ -131,7 +117,7 @@ ORDER BY rank DESC;`)
 
   const user = await currentUser();
   if (user === null) {
-    window.location.href = `/playground-hjin/${spaceId}`;
+    window.location.href = `/${spaceId}`;
     return;
   }
 
@@ -165,12 +151,14 @@ ORDER BY rank DESC;`)
     <ClientComponent chatId={chatId} chatToggle={chatToggle}>
       {/* first children */}
       <Suspense>
-        <ChatList
-          spaceId={spaceId}
-          chats={chats}
-          chatId={chatId}
-          search={search}
-        />
+        <ReactQueryProvider>
+          <ChatList
+            spaceId={spaceId}
+            chatId={chatId}
+            search={search}
+          />
+        </ReactQueryProvider>
+        
       </Suspense>
 
       {/* second children */}
@@ -192,11 +180,13 @@ ORDER BY rank DESC;`)
             currentSpace.type === "team" && "bg-stone-200 bg-opacity-60"
           )}
         >
+
+        <ReactQueryProvider>
           <VideoView2
-            chats={chats}
             workspaceId={""}
             spaceId={spaceId}
-          ></VideoView2>
+          />
+        </ReactQueryProvider>
         </div>
       )}
       {/* third children */}

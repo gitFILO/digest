@@ -1,6 +1,5 @@
 "use client";
 
-import { chats, SelectChat } from "@/db/schema";
 import { time } from "console";
 import { Tienne } from "next/font/google";
 import { use, useEffect } from "react";
@@ -10,31 +9,54 @@ import ReactPlayer from "react-player";
 import { cookies } from "next/headers";
 import { Button } from "../ui/button";
 import { FaYoutube } from "react-icons/fa";
-
-//scroll
+import { db } from "@/db";
+import { SelectChat, chats as chatsTable } from "@/db/schema";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import { desc, eq } from "drizzle-orm";
+import { useQuery } from "@tanstack/react-query";
 
 type SelectChatDto = Pick<SelectChat, "id" | "name" | "videoId">;
 
 export default function VideoView2({
-  chats,
   workspaceId,
   spaceId,
 }: {
-  chats: SelectChatDto[];
   workspaceId: string;
   spaceId: string;
 }) {
-  // console.log("all =", chats);
-  const [showVideo, setShowVideo] = useState(false);
-  const [getChats, setChats] = useState([]);
+  
 
-  useEffect(() => {
-    if (document) {
-      setShowVideo(true);
-    }
-  }, []);
+  const getChats = async () => {
+    
+    const res = await fetch(`/api/chats/${spaceId}`)
+
+    console.log("res:" , res)
+    if (!res.ok) throw new Error('Failed to fetch chats');
+    return res.json();
+  };
+  
+  const { data: chats, isLoading, error } = useQuery({
+    queryKey: ['posts'],
+    queryFn: getChats, 
+    refetchInterval: 2000 // 2초마다 폴링
+});
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred: {error.message}</div>;
+
+  console.log("chats:", chats)
+  console.log("chats.length:",chats)
+  // console.log("all =", chats);
+  const showVideo = true
+  // const [showVideo, setShowVideo] = useState(false);
+
+  // useEffect(() => {
+  //   if (document) {
+  //     setShowVideo(true);
+  //   }
+  // }, [chats]);
+
   function deleteCookie(name: string) {
     // 만료일을 과거로 설정하여 쿠키 삭제
     document.cookie =
@@ -69,14 +91,18 @@ export default function VideoView2({
     // ])}; path=/`;
   };
 
+  if(!chats){
+    return <></>
+  }
+  console.log(chats)
   if (!showVideo) {
-    return <></>;
+    return <>Loading..</>;
   } else {
     return (
       <ScrollArea className="h-full w-full ">
         <div className="videoPlayer2 m-3">
           <div className="oriVideo2 gap-5">
-            {chats.length !== 0 ? (
+            {chats ? (
               chats.map((item: any, index: number) => (
                 <div className="ori_video gap-2" key={index}>
                   <ReactPlayer
